@@ -25,3 +25,4 @@ passenger.3000.pid.lock
 _yardoc
 doc/
 Gemfile.lock
+*.swp

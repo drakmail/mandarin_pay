@@ -1,11 +1,14 @@
+# frozen_string_literal: true
+
 require "mandarin_pay/configuration"
 
 module MandarinPay
   class ConfigurationError < StandardError
     class << self
       def raise_errors_for(configuration)
-        fail ConfigurationError, "Available modes are :test or :production" unless [:test, :production].include? configuration.mode
-        fail ConfigurationError, "Available http methods are :get or :post" unless [:get, :post].include? configuration.http_method
+        unless [:test, :production].include? configuration.mode
+          raise ConfigurationError, "Available modes are :test or :production"
+        end
       end
     end
   end

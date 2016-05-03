@@ -1,17 +1,15 @@
+# frozen_string_literal: true
+
 module MandarinPay
   class Configuration
-    ATTRIBUTES = [:login, :first_password, :second_password, :mode, :http_method, :xml_http_method,
-                  :success_callback, :fail_callback, :result_callback]
+    ATTRIBUTES = [:merchant_id, :sharedsec, :mode, :success_callback, :fail_callback, :result_callback].freeze
 
     attr_accessor(*ATTRIBUTES)
 
     def initialize
-      self.login = "your_login"
-      self.first_password   = "first_password"
-      self.second_password  = "second_password"
+      self.merchant_id      = "your_merchant_id"
+      self.sharedsec        = "sharedsec"
       self.mode             = :test
-      self.http_method      = :get
-      self.xml_http_method  = :get
       self.success_callback = ->(_notification) { render text: "success" }
       self.fail_callback    = ->(_notification) { render text: "fail" }
       self.result_callback  = ->(_notification) { render text: notification.success }
