@@ -12,9 +12,9 @@ module MandarinPay
       when :payment
         Hash[conformity_params({}).sort].values.join("-") + "-" + MandarinPay.sharedsec
       when :card_binding
-        [@total, @invoice_id, MandarinPay.second_password, custom_params].flatten.join(":")
+        Hash[conformity_params({}).sort].values.join("-") + "-" + MandarinPay.sharedsec
       when :transaction
-        [@total, @invoice_id, MandarinPay.first_password, custom_params].flatten.join(":")
+        Hash[conformity_params({}).sort].values.join("-") + "-" + MandarinPay.sharedsec
       end
     end
 

@@ -1,20 +1,24 @@
+# frozen_string_literal: true
+
 require "mandarin_pay/signature_generator"
+require "mandarin_pay/conformity_params"
 
 module MandarinPay
   class Notification
     include SignatureGenerator
+    include ConformityParams
 
     attr_accessor :params
 
     def initialize(params)
       @params = HashWithIndifferentAccess.new params
-      @invoice_id = @params["InvId"]
-      @total = @params["OutSum"]
+      @order_id = @params["orderId"]
+      @price = @params["price"]
     end
 
-    %w(result success).map do |kind|
+    %w(card_binding payment transaction).map do |kind|
       define_method "valid_#{kind}_signature?" do
-        @params["SignatureValue"].to_s.downcase == generate_signature_for(kind.to_sym)
+        @params["sign"].to_s.downcase == generate_signature_for(kind.to_sym)
       end
     end
 
