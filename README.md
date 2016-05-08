@@ -20,14 +20,23 @@ Add to your `Gemfile`:
 
 Run `rails g mandarin_pay:install`, get an initializer with the following code:
 
-    MandarinPay.configure do |config|
-      config.login = ENV["MANDARINPAY_LOGIN"]
-      config.first_password = ENV["MANDARINPAY_FIRST_PASSWORD"]
-      config.second_password = ENV["MANDARINPAY_SECOND_PASSWORD"]
-      config.mode = :test # or :production
-      config.http_method = :get # or :post
-      config.xml_http_method = :get # or :post
-    end
+```ruby
+MandarinPay.configure do |config|
+  config.merchant_id = ENV["MANDARINPAY_MERCHANT_ID"]
+  config.sharedsec = ENV["MANDARINPAY_SHAREDSEC"]
+
+  # Result callback is called in MandarinPayController#paid action if valid signature
+  # was generated. It should always return "OK#{ invoice_id }" string, so implement
+  # your custom logic above `render text: notification.success` line
+
+  config.result_callback = ->(notification) { render text: notification.success }
+
+  # Define success or failure callbacks here like:
+
+  # config.success_callback = ->(notification) { render text: 'success' }
+  # config.fail_callback = ->(notification) { redirect_to root_path }
+end
+```
 
 and configure it with your credentials.
 
@@ -48,26 +57,15 @@ To define custom success/fail callbacks you can also use the initializer:
 
 Lambdas are called in MandarinPayController so you can respond with [any kind that is supported by Rails](http://guides.rubyonrails.org/layouts_and_rendering.html#creating-responses).
 
-NOTE: `result_callback` should always return `"OK#{ invoice_id }"` string. So, implement your custom logic above `render text: notification.success` line.
+NOTE: `result_callback` should always return `"OK"` string. So, implement your custom logic above `render text: notification.success` line.
 
-Mode is `:test` by default. For production you have to use `:production`.
-`http_method` and `xml_http_method` are `:get` by default but can be configured as `:post`
+Once you are done, simply use `pay_form` helper in your view:
 
-Once you are done, simply use `pay_url` helper in your view:
-
-    <%= pay_url "Pay with Mandarin Pay", ivoice_id, total_sum %>
+    <%= pay_form "Pay with Mandarin Pay", "invoice_number", 20.00 %>
 
 Additionally you may want to pass extra options. There is no problem:
 
-    <%= pay_url "Pay with Mandarin Pay", ivoice_id, total_sum, { description: "Invoice description", email: "foo@bar.com", currency: "WMZM", culture: :ru } %>
-
-Or if you would like to pass some custom params use `custom` key in options hash:
-
-    <%= pay_url "Pay with Mandarin Pay", ivoice_id, total_sum, { description: "Invoice description", email: "foo@bar.com", currency: "WMZM", culture: :ru, custom: { param1: "value1", param2: "value2" }} %>      
-
-You can also pass some HTML options with `html` key in options hash (Bootstrap 3 example):
-
-    <%= pay_url "Pay with Mandarin Pay", ivoice_id, total_sum, { html: { class: 'btn btn-primary btn-bg' }}
+    <%= pay_form "Pay with Mandarin Pay", "invoice_number", 20.00, customer_email: "user@example.com", class: "btn btn-succses", form_class: "mp-form" %>
 
 ## Supported Rubies and Rails versions
 

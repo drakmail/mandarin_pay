@@ -20,7 +20,7 @@ module MandarinPay
     attr_accessor(*PARAMS_CONFORMITY.keys)
 
     def conformity_params(extra_params)
-      Hash[default_params.merge(extra_params).map do |key, value|
+      Hash[default_params.merge(extra_params.deep_symbolize_keys).map do |key, value|
         if key == :price
           [PARAMS_CONFORMITY[key], format("%.2f", value)]
         else

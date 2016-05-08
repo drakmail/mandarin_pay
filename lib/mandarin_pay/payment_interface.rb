@@ -16,8 +16,9 @@ module MandarinPay
     end
 
     def pay_params(extra_params = {})
-      temp_params = conformity_params(extra_params)
-      temp_params["sign"] = generate_signature_for(:payment)
+      temp_params = {}
+      temp_params["sign"] = generate_signature_for(:payment, extra_params)
+      temp_params.merge!(conformity_params(extra_params))
       temp_params
     end
   end

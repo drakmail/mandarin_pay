@@ -1,10 +1,6 @@
 MandarinPay.configure do |config|
-  config.login = ENV["MANDARINPAY_LOGIN"]
-  config.first_password = ENV["MANDARINPAY_FIRST_PASSWORD"]
-  config.second_password = ENV["MANDARINPAY_SECOND_PASSWORD"]
-  config.mode = :test # or :production
-  config.http_method = :get # or :post
-  config.xml_http_method = :get # or :post
+  config.merchant_id = ENV["MANDARINPAY_MERCHANT_ID"]
+  config.sharedsec = ENV["MANDARINPAY_SHAREDSEC"]
 
   # Result callback is called in MandarinPayController#paid action if valid signature
   # was generated. It should always return "OK#{ invoice_id }" string, so implement
