@@ -1,8 +1,9 @@
 class MandarinPayController < ApplicationController
   before_action :create_notification
+  skip_before_action :verify_authenticity_token
 
   def paid
-    if @notification.valid_result_signature?
+    if @notification.valid_transaction_signature?
       instance_exec @notification, &MandarinPay.result_callback
     else
       instance_exec @notification, &MandarinPay.fail_callback
@@ -10,11 +11,7 @@ class MandarinPayController < ApplicationController
   end
 
   def success
-    if @notification.valid_success_signature?
-      instance_exec @notification, &MandarinPay.success_callback
-    else
-      instance_exec @notification, &MandarinPay.fail_callback
-    end
+    instance_exec @notification, &MandarinPay.success_callback
   end
 
   def fail

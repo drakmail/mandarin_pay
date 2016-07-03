@@ -4,7 +4,7 @@ by [Drakmail][]
 
 [Drakmail]: http://drakmail.ru
 
-Ruby wrapper for [Mandarin Pay API][]. Make Mandarin Pay to work with your Rails project without pain. MandarinPay took the best from [rubykassa gem][] and [Active Merchant Robokassa integration] but easier to use and setup.
+Ruby wrapper for [MandarinPay API][]. Make Mandarin Pay to work with your Rails project without pain. MandarinPay took the best from [rubykassa gem][] and [Active Merchant Robokassa integration] but easier to use and setup.
 
 [MandarinPay API]: http://mandarin_pay.com/sites/default/files/protokol_integracii_v0.5.5_0.pdf
 [rubykassa gem]: https://github.com/ZeroOneStudio/rubykassa
